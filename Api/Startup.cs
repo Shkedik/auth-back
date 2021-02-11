@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace Api
 {
@@ -25,6 +26,24 @@ namespace Api
             services.AddControllers();
 
             services.AddHttpContextAccessor();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "API",
+                    Description = "ASP.NET Core Web API",
+                });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+            });
 
             Services.ServiceConfiguration.Configure(services, Configuration);
 
@@ -69,6 +88,16 @@ namespace Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger(s =>
+            {
+                s.SerializeAsV2 = true;
+            });
+
+            app.UseSwaggerUI(s =>
+            {
+                s.SwaggerEndpoint("http://localhost:64457/swagger/v1/swagger.json", "My API V1");
+            });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -76,8 +105,7 @@ namespace Api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.UseHadleExceptionMiddleware();
-            //app.UseExceptionHandler();
+            app.UseHadleExceptionMiddleware();
 
             app.UseCors(builder =>
             {

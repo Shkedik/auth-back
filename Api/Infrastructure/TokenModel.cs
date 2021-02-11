@@ -7,7 +7,7 @@ namespace Api.Infrastructure
     {
         public const string ISSUER = "MyAuthServer";
         public const string AUDIENCE = "MyAuthClient";
-        const string KEY = "itp_key123_kartashova";
+        const string KEY = "test-key-11022021";
         public const int LIFETIME = 320;
 
         public static SymmetricSecurityKey GetSymmetricSecurityKey()

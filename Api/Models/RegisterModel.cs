@@ -14,7 +14,7 @@ namespace Api.Models
         public String Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Error...", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Not valid password, MinimumLength = 8")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public String Password { get; set; }
