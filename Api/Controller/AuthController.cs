@@ -75,21 +75,21 @@ namespace Api.Controller
         {
             var identity = GetIdentity(user);
             var now = DateTime.UtcNow;
-            var expireDate = now.Add(TimeSpan.FromMinutes(TokenModel.LIFETIME));
+            var expiredDate = now.Add(TimeSpan.FromMinutes(TokenModel.LIFETIME));
 
             var jwt = new JwtSecurityToken(
                 issuer: TokenModel.ISSUER,
                 audience: TokenModel.AUDIENCE,
                 notBefore: now,
                 claims: identity.Claims,
-                expires: expireDate,
+                expires: expiredDate,
                 signingCredentials: new SigningCredentials(TokenModel.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-            var encodeJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             var response = new
             {
-                encodeJwt,
-                expireDate
+                encodedJwt,
+                expiredDate
             };
 
             return response;
